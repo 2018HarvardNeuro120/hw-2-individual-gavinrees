@@ -17,23 +17,23 @@ sta_freq = stim_freq;
 %initialize blank array
 sta = zeros(38,size(sta_time,2));
 for sp = spikes'
-    %get time window to look in
+    
+    %this code is disgusting but necessary. If the spike isn't exactly on a
+    %stim_time (which is often) then it will only get 
+%     if size(find(stim_time == sp),2) == 0
+%         beforeInds = find(stim_time <= sp);
+%         sp = stim_time(beforeInds(end));
+%     end
+
     timeWindow = sta_time + sp;
     beginning = timeWindow(1);
     timeEnd = timeWindow(end);
-    %get indices of times in the window
     indices = find(stim_time >=beginning & stim_time <= timeEnd);
-    %if the spike time doesn't fall exactly on a stimulus time, we pretend
-    %like it fell on the one directly after it (to avoid confusion with 
-%   correlated sta afterwards) and add a following spectrogram value accordingly. 
     if size(indices,2) ~= 51
-          indices = [indices (indices(end) + 1)];
-    end
-    %finally get spectrogram in the time window
+        indices = [(indices(1) -1) 
     neighborhood = stim_spectrogram(:,indices);
     sta = sta + neighborhood;
 end
-%average
 numSpikes = size(spikes,1);
 sta = sta / numSpikes;
 
