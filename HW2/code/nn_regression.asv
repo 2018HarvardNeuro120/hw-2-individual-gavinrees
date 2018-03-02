@@ -2,9 +2,9 @@ clear all
 
 %% Set up parameters
 N = 40; % Number of training samples
-epsilon = 0.2; % Amount of label noise
-Nh = 500;
-lambda = 0.0001;
+epsilon = 0.0; % Amount of label noise
+Nh = 5;
+lambda = 0;
 
 %% Make dataset
 target_fn = @(t) sin(t);
@@ -31,8 +31,8 @@ h_test(h_test<0)=0;
 %% Now train linear regression to map from h to y
 
 % w = ????
-squared = h*h';
-w = y*h'*pinv(squared + lambda*eye(size(squared,1)));
+squared = h*h'
+w = y*h'*pinv(sq + lambda*eye(
 
 y_pred = w*h_test;
 
